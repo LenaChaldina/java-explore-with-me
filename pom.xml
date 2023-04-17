@@ -56,7 +56,6 @@
 							<phase>compile</phase>
 						</execution>
 					</executions>
-
 					<dependencies>
 						<dependency>
 							<groupId>com.puppycrawl.tools</groupId>
