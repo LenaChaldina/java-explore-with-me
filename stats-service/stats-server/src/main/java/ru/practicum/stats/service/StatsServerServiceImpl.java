@@ -10,7 +10,6 @@ import ru.practicum.stats.models.Stats;
 import ru.practicum.stats.repositorys.StatsRepository;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Slf4j
@@ -20,8 +19,6 @@ public class StatsServerServiceImpl implements StatsServerService {
 
     private final StatsRepository statsRepository;
 
-    private final DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
     @Override
     public StatsDto saveStats(StatsDto requestStatsDto) {
         Stats stats = StatsMapper.toStats(requestStatsDto);
@@ -29,14 +26,12 @@ public class StatsServerServiceImpl implements StatsServerService {
     }
 
     @Override
-    public List<StatsUserDto> getStats(String start, String end, List<String> uris, boolean unique) {
-        LocalDateTime startFormatting = LocalDateTime.parse(start, format);
-        LocalDateTime endFormatting = LocalDateTime.parse(end, format);
+    public List<StatsUserDto> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, boolean unique) {
         List<Stats> stats;
         if (uris != null) {
-            stats = statsRepository.findAllBetweenDates(uris, startFormatting, endFormatting);
+            stats = statsRepository.findAllByUriInAndTimestampBetween(uris, start, end);
         } else {
-            stats = statsRepository.findAllByTimestampIsBetween(startFormatting, endFormatting);
+            stats = statsRepository.findAllByTimestampIsBetween(start, end);
         }
         if (unique) {
             List<Stats> uniqueStats = new ArrayList<>();

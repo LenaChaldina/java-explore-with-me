@@ -8,8 +8,6 @@ import ru.practicum.stats.models.Stats;
 @UtilityClass
 public class StatsMapper {
     public static Stats toStats(StatsDto requestStatsDto) {
-
-
         return Stats.builder()
                 .app(requestStatsDto.getApp())
                 .ip(requestStatsDto.getIp())
